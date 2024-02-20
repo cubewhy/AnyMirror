@@ -1,7 +1,7 @@
 # Any Mirror
 
-A software for mirroring any static sources
+用于镜像任何静态资源的程序
 
-## Warning
+## 免责声明
 
-AnyMirror is a hobby project, do not use for illegal purposes
+AnyMirror只是一个兴趣, 不要用于非法用途.
