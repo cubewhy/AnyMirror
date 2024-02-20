@@ -1,5 +1,6 @@
 package org.cubewhy.mirror.controller;
 
+import com.google.gson.Gson;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -27,7 +28,6 @@ public class MirrorController {
     OkHttpClient httpClient;
 
     @Scheduled(cron = "0 0 0 1/1 * ? ")
-    @GetMapping("/sync")
     public void sync() throws Exception {
         log.info("Start sync files");
         for (String s : config.getSync()) {
@@ -45,6 +45,11 @@ public class MirrorController {
             }
         }
         log.info("Sync finished");
+    }
+
+    @GetMapping("/mirror-list")
+    public void mirrorList(HttpServletResponse response) throws Exception {
+        response.getWriter().write(new Gson().toJson(config.getMirrors()));
     }
 
     @GetMapping("/**")
