@@ -9,6 +9,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -24,6 +25,27 @@ import static org.cubewhy.mirror.AnyMirrorApplication.config;
 public class MirrorController {
     @Resource
     OkHttpClient httpClient;
+
+    @Scheduled(cron = "0 0 0 1/1 * ? ")
+    @GetMapping("/sync")
+    public void sync() throws Exception {
+        log.info("Start sync files");
+        for (String s : config.getSync()) {
+            File local = new File(MIRROR_BASE, s.replaceFirst("https://", "http://").replaceFirst("http://", ""));
+            Request r = new Request.Builder()
+                    .get()
+                    .url(s).build();
+            try (Response res = httpClient.newCall(r).execute()) {
+                if (res.isSuccessful()) {
+                    log.info("Synced " + local + " successfully");
+                    FileUtils.writeByteArrayToFile(local, Objects.requireNonNull(res.body()).bytes());
+                } else {
+                    log.error("Synced " + local + " failed");
+                }
+            }
+        }
+        log.info("Sync finished");
+    }
 
     @GetMapping("/**")
     public void mirror(HttpServletRequest request, HttpServletResponse response) throws Exception {

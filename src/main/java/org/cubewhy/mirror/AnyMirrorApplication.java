@@ -8,11 +8,13 @@ import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 
 @SpringBootApplication
+@EnableScheduling
 public class AnyMirrorApplication {
     public static final File CONFIG_DIR = new File(System.getProperty("user.home"), ".cubewhy/mirror");
     public static final File MIRROR_BASE = new File(CONFIG_DIR, "files");
