@@ -11,7 +11,10 @@ public class Config {
 
     {
         mirrors.addAll(List.of(new String[]{
+                // LunarClient
                 "textures.lunarclientcdn.com",
+                "offline.lunarclientcdn.com",
+                // Minecraft
                 "resources.download.minecraft.net",
                 "piston-data.mojang.com",
                 "piston-meta.mojang.com",
